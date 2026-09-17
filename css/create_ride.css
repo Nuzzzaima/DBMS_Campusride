@@ -1,0 +1,160 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    background: #f8f8fc;
+    font-family: Arial, sans-serif;
+    color: #08194f;
+}
+
+.header {
+    background: white;
+    padding: 13px 25px;
+    border-bottom: 1px solid #e2def4;
+}
+
+.header h2 {
+    margin: 0;
+    font-size: 17px;
+    font-weight: 700;
+}
+
+.header p {
+    margin: 5px 0 0;
+    color: #68738b;
+    font-size: 12px;
+}
+
+.container {
+    width: 590px;
+    margin: 20px auto;
+    padding: 26px;
+    background: white;
+    border: 1px solid #ded9f3;
+    border-radius: 14px;
+    box-shadow: 0 2px 6px rgba(40, 32, 90, 0.08);
+}
+
+.row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+}
+
+label {
+    display: block;
+    margin-bottom: 7px;
+    font-size: 12px;
+    font-weight: 500;
+}
+
+input,
+select,
+textarea {
+    width: 100%;
+    border: 1px solid #ddd8f5;
+    border-radius: 12px;
+    background: white;
+    color: #17265b;
+    font-family: Arial, sans-serif;
+    font-size: 12px;
+    outline: none;
+    transition: 0.2s;
+}
+
+input,
+select {
+    height: 36px;
+    padding: 0 12px;
+}
+
+input::placeholder,
+textarea::placeholder {
+    color: #9aa2b5;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+    border-color: #8238ee;
+    box-shadow: 0 0 0 3px rgba(130, 56, 238, 0.08);
+}
+
+select {
+    cursor: pointer;
+}
+
+textarea {
+    height: 70px;
+    padding: 11px 12px;
+    resize: none;
+}
+
+.women {
+    margin: 15px 0;
+    padding: 11px 13px;
+    background: #f8f7fc;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.women b {
+    display: block;
+    font-size: 12px;
+    font-weight: 600;
+    margin-bottom: 3px;
+}
+
+.women small {
+    display: block;
+    color: #68738b;
+    font-size: 10px;
+}
+
+.women input {
+    width: 18px;
+    height: 18px;
+    accent-color: #8238ee;
+    cursor: pointer;
+}
+
+.buttons {
+    display: flex;
+    gap: 10px;
+    margin-top: 19px;
+}
+
+button {
+    height: 43px;
+    padding: 0 20px;
+    border-radius: 11px;
+    font-family: Arial, sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+button[name="create"] {
+    border: none;
+    background: #8238ee;
+    color: white;
+    box-shadow: 0 4px 9px rgba(130, 56, 238, 0.2);
+}
+
+button[name="create"]:hover {
+    background: #712bd8;
+}
+
+button[type="reset"] {
+    border: 1px solid #bca9f5;
+    background: white;
+    color: #7132d5;
+}
+
+button[type="reset"]:hover {
+    background: #f8f5ff;
+}
