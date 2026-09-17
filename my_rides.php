@@ -3,7 +3,7 @@
 session_start();
 include "db.php";
 $user_id = 1;
-$sql = "SELECT * FROM ride_summary_view WHERE user_id = '$user_id' ORDER BY ride_date DESC, departure_time DESC";
+$sql = "SELECT * FROM ride WHERE user_id = '$user_id' ORDER BY ride_date DESC, departure_time DESC";
 $result = mysqli_query($conn, $sql);
 
 ?>
