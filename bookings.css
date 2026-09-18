@@ -1,0 +1,611 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    background: #f8f7ff;
+    font-family: Arial, sans-serif;
+    color: #08194f;
+}
+
+.dashboard {
+    display: flex;
+    min-height: 100vh;
+}
+
+
+/* ================= SIDEBAR ================= */
+
+.sidebar {
+    width: 197px;
+    background: white;
+    border-right: 1px solid #ded9f3;
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+}
+
+
+/* LOGO */
+
+.logo {
+    height: 63px;
+    border-bottom: 1px solid #ded9f3;
+    display: flex;
+    align-items: center;
+    padding: 12px 15px;
+    gap: 9px;
+}
+
+.logo-icon {
+    width: 30px;
+    height: 30px;
+    background: #8238ee;
+    color: white;
+    border-radius: 9px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    font-weight: bold;
+}
+
+.logo b {
+    display: block;
+    font-size: 13px;
+}
+
+.logo small {
+    display: block;
+    color: #8790a5;
+    font-size: 9px;
+    margin-top: 2px;
+}
+
+
+/* MENU */
+
+.menu {
+    padding: 10px 9px;
+}
+
+.menu a {
+    display: block;
+    color: #26365d;
+    text-decoration: none;
+    font-size: 12px;
+    padding: 10px 9px;
+    border-radius: 12px;
+    margin-bottom: 2px;
+}
+
+.menu a:hover {
+    background: #f2edff;
+}
+
+.menu .active {
+    background: #8238ee;
+    color: white;
+}
+
+
+/* SIDEBAR BOTTOM */
+
+.sidebar-bottom {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    border-top: 1px solid #ded9f3;
+    padding: 15px 17px;
+}
+
+.profile {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.profile-pic {
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    background: #e7e4ef;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+}
+
+.profile b {
+    display: block;
+    font-size: 10px;
+}
+
+.profile small {
+    display: block;
+    color: #8a92a5;
+    font-size: 9px;
+    margin-top: 2px;
+}
+
+.logout {
+    display: block;
+    margin-top: 18px;
+    color: red;
+    text-decoration: none;
+    font-size: 11px;
+}
+
+
+/* ================= MAIN ================= */
+
+.main {
+    margin-left: 197px;
+    width: calc(100% - 197px);
+}
+
+
+/* ================= HEADER ================= */
+
+.header {
+    height: 75px;
+    background: white;
+    border-bottom: 1px solid #ded9f3;
+    padding: 18px 26px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.header h2 {
+    margin: 0;
+    font-size: 17px;
+}
+
+.header p {
+    margin: 5px 0 0;
+    color: #68738b;
+    font-size: 12px;
+}
+
+.header-right {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.notification {
+    width: 32px;
+    height: 32px;
+    background: #f5f1ff;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+}
+
+.user {
+    background: #f5f1ff;
+    border-radius: 18px;
+    padding: 6px 12px 6px 7px;
+    font-size: 11px;
+    display: flex;
+    align-items: center;
+    gap: 7px;
+}
+
+.small-pic {
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    background: #dfe7df;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 10px;
+}
+
+
+/* ================= CONTENT ================= */
+
+.content {
+    padding: 21px 27px;
+}
+
+
+/* PAGE HEADING */
+
+.page-heading {
+    margin-bottom: 13px;
+}
+
+.page-heading h2 {
+    margin: 0;
+    font-size: 17px;
+}
+
+.page-heading p {
+    margin: 4px 0 0;
+    color: #68738b;
+    font-size: 12px;
+}
+
+
+/* ================= BOOKING LIST ================= */
+
+.booking-list {
+    width: 587px;
+}
+
+
+/* ================= BOOKING CARD ================= */
+
+.booking-card {
+    width: 587px;
+    min-height: 177px;
+    background: white;
+    border: 1px solid #ded9f3;
+    border-radius: 15px;
+    padding: 16px;
+    margin-bottom: 13px;
+    box-shadow: 0 2px 6px rgba(40, 32, 90, 0.08);
+}
+
+
+/* TOP */
+
+.booking-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 13px;
+}
+
+.booking-number {
+    font-size: 13px;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.booking-date {
+    color: #8790a5;
+    font-size: 9px;
+    margin-top: 5px;
+}
+
+
+/* ================= STATUS ================= */
+
+.status {
+    display: inline-block;
+    padding: 4px 8px;
+    border-radius: 8px;
+    font-size: 8px;
+    font-weight: normal;
+    text-transform: lowercase;
+}
+
+.status.confirmed {
+    background: #dff8ed;
+    color: #16845b;
+}
+
+.status.completed {
+    background: #e3efff;
+    color: #3569c5;
+}
+
+.status.cancelled {
+    background: #ffe3e3;
+    color: #d94141;
+}
+
+
+/* ================= FARE ================= */
+
+.fare {
+    color: #8238ee;
+    font-size: 15px;
+    font-weight: bold;
+}
+
+
+/* ================= ROUTE ================= */
+
+.route {
+    background: #f7f5ff;
+    border-radius: 12px;
+    padding: 10px 12px;
+    margin-bottom: 10px;
+}
+
+.location {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+}
+
+.location small {
+    display: block;
+    color: #8991a5;
+    font-size: 8px;
+    margin-bottom: 3px;
+}
+
+.location b {
+    display: block;
+    font-size: 10px;
+    font-weight: normal;
+    color: #08194f;
+}
+
+
+/* START DOT */
+
+.start-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #8238ee;
+    border: 2px solid #8238ee;
+    flex-shrink: 0;
+}
+
+
+/* END DOT */
+
+.end-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: white;
+    border: 2px solid #8238ee;
+    flex-shrink: 0;
+}
+
+
+/* ROUTE LINE */
+
+.route-line {
+    width: 1px;
+    height: 13px;
+    background: #b9a7e8;
+    margin-left: 3px;
+}
+
+
+/* ================= BOTTOM ================= */
+
+.booking-bottom {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+
+/* ================= DRIVER ================= */
+
+.driver {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.driver-pic {
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    object-fit: cover;
+    background: #e5e2ed;
+}
+
+.driver-initial {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 10px;
+    color: #68738b;
+}
+
+.driver-name {
+    font-size: 10px;
+    color: #26365d;
+}
+
+
+/* ================= ACTIONS ================= */
+
+.actions {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+}
+
+.actions a,
+.actions button {
+    font-family: Arial, sans-serif;
+    font-size: 9px;
+    text-decoration: none;
+    cursor: pointer;
+    border-radius: 15px;
+    padding: 7px 12px;
+}
+
+
+/* VIEW DETAILS */
+
+.view-btn {
+    background: #f0e8ff;
+    color: #7132d5;
+    border: none;
+}
+
+.view-btn:hover {
+    background: #e6d9ff;
+}
+
+
+/* CANCEL */
+
+.cancel-form {
+    margin: 0;
+    padding: 0;
+}
+
+.cancel-btn {
+    background: white;
+    color: #ff4b4b;
+    border: 1px solid #ffb4b4;
+}
+
+.cancel-btn:hover {
+    background: #fff1f1;
+}
+
+
+/* SOS */
+
+.sos-btn {
+    background: #ff3f4f;
+    color: white;
+    border: none;
+    font-weight: bold;
+}
+
+.sos-btn:hover {
+    background: #e92e3e;
+}
+
+
+/* RATE */
+
+.rate-btn {
+    background: transparent;
+    color: #7132d5;
+    border: none;
+    padding-left: 5px !important;
+    padding-right: 5px !important;
+}
+
+.rate-btn:hover {
+    background: #f5f0ff;
+}
+
+
+/* ================= NO BOOKINGS ================= */
+
+.no-bookings {
+    width: 587px;
+    background: white;
+    border: 1px solid #ded9f3;
+    border-radius: 15px;
+    padding: 30px;
+    text-align: center;
+}
+
+.no-bookings h3 {
+    margin: 0 0 7px;
+    font-size: 14px;
+}
+
+.no-bookings p {
+    margin: 0 0 14px;
+    color: #68738b;
+    font-size: 11px;
+}
+
+.no-bookings a {
+    display: inline-block;
+    background: #8238ee;
+    color: white;
+    text-decoration: none;
+    padding: 9px 16px;
+    border-radius: 10px;
+    font-size: 10px;
+}
+
+/* ================= ACTIONS ================= */
+
+.actions {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 7px;
+}
+
+.actions a,
+.actions button {
+    font-family: Arial, sans-serif;
+    font-size: 9px;
+    text-decoration: none;
+    cursor: pointer;
+    border-radius: 15px;
+    padding: 7px 12px;
+    display: inline-block;
+    line-height: normal;
+}
+
+
+/* VIEW DETAILS */
+
+.view-btn {
+    background: #f0e8ff;
+    color: #7132d5;
+    border: none;
+}
+
+.view-btn:hover {
+    background: #e6d9ff;
+}
+
+
+/* CANCEL */
+
+.cancel-form {
+    margin: 0;
+    padding: 0;
+}
+
+.cancel-btn {
+    background: white;
+    color: #ff4b4b;
+    border: 1px solid #ffb4b4;
+}
+
+.cancel-btn:hover {
+    background: #fff1f1;
+}
+
+
+/* SOS */
+
+.sos-btn {
+    background: #ff3f4f;
+    color: white;
+    border: none;
+    font-weight: bold;
+}
+
+.sos-btn:hover {
+    background: #e92e3e;
+}
+
+
+/* RATE */
+
+.rate-btn {
+    background: transparent;
+    color: #7132d5;
+    border: none;
+    padding-left: 5px !important;
+    padding-right: 5px !important;
+}
+
+.rate-btn:hover {
+    background: #f5f0ff;
+}
