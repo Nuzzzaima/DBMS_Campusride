@@ -1,13 +1,80 @@
 * {
+    margin: 0;
+    padding: 0;
     box-sizing: border-box;
 }
 
 body {
+    display: grid;
+    grid-template-columns: 197px 1fr;
+    grid-template-areas: "sdbr main";
     margin: 0;
     background: #f8f8fc;
     font-family: Arial, sans-serif;
     color: #08194f;
 }
+
+.sidebar {
+    grid-area: sdbr;
+    min-height: 100vh;
+    background-color: white;
+    border-right: 1px solid #ded9f3;
+}
+
+.sidebar .logo {
+    padding: 20px 15px;
+}
+
+.sidebar .logo b {
+    display: block;
+    font-size: 16px;
+    color: #08194f;
+}
+
+.sidebar .logo small {
+    display: block;
+    margin-top: 4px;
+    font-size: 10px;
+    color: #8790a5;
+}
+
+.sidebar ul {
+    list-style: none;
+    margin: 0;
+    padding: 12px 10px;
+}
+
+.sidebar ul li {
+    display: block;
+    margin-bottom: 4px;
+}
+
+.sidebar ul li a {
+    display: block;
+    width: 100%;
+    padding: 11px 12px;
+    box-sizing: border-box;
+    text-decoration: none;
+    color: #5f6375;
+    font-size: 13px;
+    border-radius: 7px;
+}
+
+.sidebar ul li a:hover {
+    background-color: #f1eaff;
+    color: #8238ee;
+}
+
+.sidebar ul li a.active {
+    background-color: #8238ee;
+    color: white;
+}
+
+.main-content {
+    grid-area: main;
+}
+
+/* HEADER */
 
 .header {
     background: white;
@@ -16,16 +83,17 @@ body {
 }
 
 .header h2 {
-    margin: 0;
     font-size: 17px;
     font-weight: 700;
 }
 
 .header p {
-    margin: 5px 0 0;
+    margin-top: 5px;
     color: #68738b;
     font-size: 12px;
 }
+
+/* FORM */
 
 .container {
     width: 590px;
@@ -61,7 +129,6 @@ textarea {
     font-family: Arial, sans-serif;
     font-size: 12px;
     outline: none;
-    transition: 0.2s;
 }
 
 input,
@@ -92,6 +159,8 @@ textarea {
     resize: none;
 }
 
+/* WOMEN ONLY */
+
 .women {
     margin: 15px 0;
     padding: 11px 13px;
@@ -104,9 +173,9 @@ textarea {
 
 .women b {
     display: block;
+    margin-bottom: 3px;
     font-size: 12px;
     font-weight: 600;
-    margin-bottom: 3px;
 }
 
 .women small {
@@ -121,6 +190,8 @@ textarea {
     accent-color: #8238ee;
     cursor: pointer;
 }
+
+/* BUTTONS */
 
 .buttons {
     display: flex;
