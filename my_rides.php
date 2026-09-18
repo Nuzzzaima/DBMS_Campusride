@@ -2,7 +2,13 @@
 
 session_start();
 include "db.php";
-$user_id = 1;
+
+if (!isset($_SESSION['user_id'])) {
+    header("Location: login.php");
+    exit();
+}
+
+$user_id = $_SESSION['user_id'];
 $sql = "SELECT * FROM ride WHERE user_id = '$user_id' ORDER BY ride_date DESC, departure_time DESC";
 $result = mysqli_query($conn, $sql);
 
@@ -84,16 +90,16 @@ body {
             <li><a href="dashboard.php">Dashboard</a></li>
             <li><a href="find_ride.php">Find a Ride</a></li>
             <li><a href="create_ride.php">Create a Ride</a></li>
-            <li><a href="my_rides.php">My Rides</a></li>
+            <li><a href="my_rides.php"  class="active">My Rides</a></li>
             <li><a href="ride_summary.php">Ride Summary</a></li>
-            <li><a href="#">Ride Requests</a></li>
-            <li><a href="#">Bookings</a></li>
-            <li><a href="#">Vehicles</a></li>
+            <li><a href="ride_requests.php">Ride Requests</a></li>
+            <li><a href="bookings.php">Bookings</a></li>
+            <li><a href="vehicles.php">Vehicles</a></li>
             <li><a href="profile.php">Profile</a></li>
-            <li><a href="#">Ratings & Reviews</a></li>
+            <li><a href="ratings.php">Ratings & Reviews</a></li>
             <li><a href="#">My Savings</a></li>
             <li><a href="#">Notifications</a></li>
-            <li><a href="#">SOS / Emergency</a></li>
+            <li><a href="sos.php">SOS / Emergency</a></li>
         </ul>
     </div>
 

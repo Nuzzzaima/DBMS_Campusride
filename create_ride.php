@@ -1,8 +1,14 @@
 <?php
 session_start();
 include "db.php";
+
+if (!isset($_SESSION['user_id'])) {
+    header("Location: login.php");
+    exit();
+}
+
+$user_id = $_SESSION['user_id'];
 if (isset($_POST['create'])) {
-   $user_id = $_SESSION['user_id'] ?? 1;
 $start =$_POST['start'];
 $destination =$_POST['destination'];
 $date =$_POST['date'];
@@ -81,6 +87,11 @@ body {
     font-size: 13px !important;
 }
 
+.sidebar ul li a.active {
+    background-color: #8238ee !important;
+    color: white !important;
+}
+
 .main-content {
     grid-area: main !important;
     margin-left: 0 !important;
@@ -89,7 +100,7 @@ body {
 </head>
 <body>
     <div class="sidebar">
-        <div class="logo"> <b>CampusRide</b> <small>UIU Student Portal</small> </div> <div class="menu"> <ul> <li><a href="dashboard.php">Dashboard</a></li> <li><a href="find_ride.php">Find a Ride</a></li> <li><a href="create_ride.php">Create a Ride</a></li> <li><a href="my_rides.php">My Rides</a></li> <li><a href="ride_summary.php">Ride Summary</a></li> <li><a href="#">Ride Requests</a></li> <li><a href="#">Bookings</a></li> <li><a href="#">Vehicles</a></li> <li><a href="profile.php">Profile</a></li> <li><a href="#">Ratings & Reviews</a></li> <li><a href="#">My Savings</a></li> <li><a href="#">Notifications</a></li> <li><a href="#">SOS / Emergency</a></li> </ul> </div>
+        <div class="logo"> <b>CampusRide</b> <small>UIU Student Portal</small> </div> <div class="menu"> <ul> <li><a href="dashboard.php">Dashboard</a></li> <li><a href="find_ride.php">Find a Ride</a></li> <li><a href="create_ride.php" class="active">Create a Ride</a></li> <li><a href="my_rides.php">My Rides</a></li> <li><a href="ride_summary.php">Ride Summary</a></li> <li><a href="ride_requests.php">Ride Requests</a></li> <li><a href="bookings.php">Bookings</a></li> <li><a href="vehicles.php">Vehicles</a></li> <li><a href="profile.php">Profile</a></li> <li><a href="ratings.php">Ratings & Reviews</a></li> <li><a href="#">My Savings</a></li> <li><a href="#">Notifications</a></li> <li><a href="sos.php">SOS / Emergency</a></li> </ul> </div>
     </div>
     <div class="main-content">
 <div class="header">

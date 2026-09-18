@@ -1,0 +1,507 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    background: #f8f7ff;
+    font-family: Arial, sans-serif;
+    color: #08194f;
+}
+
+.dashboard {
+    display: flex;
+    min-height: 100vh;
+}
+
+
+/* SIDEBAR */
+
+.sidebar {
+    width: 197px;
+    background: white;
+    border-right: 1px solid #ded9f3;
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+}
+
+.logo {
+    height: 63px;
+    border-bottom: 1px solid #ded9f3;
+    display: flex;
+    align-items: center;
+    padding: 12px 15px;
+    gap: 9px;
+}
+
+.logo-icon {
+    width: 30px;
+    height: 30px;
+    background: #8238ee;
+    color: white;
+    border-radius: 9px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.logo b {
+    display: block;
+    font-size: 13px;
+}
+
+.logo small {
+    display: block;
+    color: #8790a5;
+    font-size: 9px;
+    margin-top: 2px;
+}
+
+
+/* MENU */
+
+.menu {
+    padding: 10px 9px;
+}
+
+.menu a {
+    display: block;
+    color: #26365d;
+    text-decoration: none;
+    font-size: 12px;
+    padding: 10px 9px;
+    border-radius: 12px;
+    margin-bottom: 2px;
+}
+
+.menu a span {
+    margin-left: 8px;
+}
+
+.menu a:hover {
+    background: #f2edff;
+}
+
+.menu .active {
+    background: #8238ee;
+    color: white;
+}
+
+
+/* SIDEBAR BOTTOM */
+
+.sidebar-bottom {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    border-top: 1px solid #ded9f3;
+    padding: 15px 17px;
+}
+
+.profile {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.profile-pic {
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    background: #e7e4ef;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+}
+
+.profile b {
+    display: block;
+    font-size: 10px;
+}
+
+.profile small {
+    display: block;
+    color: #8a92a5;
+    font-size: 9px;
+    margin-top: 2px;
+}
+
+.logout {
+    display: block;
+    margin-top: 18px;
+    color: red;
+    text-decoration: none;
+    font-size: 11px;
+}
+
+
+/* MAIN */
+
+.main {
+    margin-left: 197px;
+    width: calc(100% - 197px);
+}
+
+
+/* HEADER */
+
+.header {
+    height: 75px;
+    background: white;
+    border-bottom: 1px solid #ded9f3;
+    padding: 18px 26px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.header h2 {
+    margin: 0;
+    font-size: 17px;
+}
+
+.header p {
+    margin: 5px 0 0;
+    color: #68738b;
+    font-size: 12px;
+}
+
+.header-right {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.notification {
+    width: 32px;
+    height: 32px;
+    background: #f5f1ff;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.user {
+    background: #f5f1ff;
+    border-radius: 18px;
+    padding: 6px 12px 6px 7px;
+    font-size: 11px;
+    display: flex;
+    align-items: center;
+    gap: 7px;
+}
+
+.small-pic {
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    background: #dfe7df;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+
+/* CONTENT */
+
+.content {
+    padding: 21px 27px;
+    width: 667px;
+}
+
+
+/* ACTIVE RIDE */
+
+.ride-card {
+    background: white;
+    border: 1px solid #ded9f3;
+    border-radius: 15px;
+    padding: 17px;
+    margin-bottom: 14px;
+    box-shadow: 0 2px 4px rgba(40, 32, 90, 0.08);
+}
+
+.ride-title {
+    font-size: 10px;
+    color: #94a3b8;
+    margin-bottom: 10px;
+}
+
+.driver {
+    display: flex;
+    align-items: center;
+}
+
+.driver-picture {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+    background: #ede9fe;
+    color: #7c3aed;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+}
+
+.driver-info {
+    margin-left: 10px;
+    flex: 1;
+}
+
+.driver-info h3 {
+    margin: 0;
+    font-size: 14px;
+    color: #172554;
+}
+
+.driver-info p {
+    font-size: 10px;
+    color: #64748b;
+    margin-top: 3px;
+    margin-bottom: 0;
+}
+
+.active {
+    background: #d1fae5;
+    color: #047857;
+    font-size: 10px;
+    padding: 4px 10px;
+    border-radius: 12px;
+}
+
+
+/* ROUTE */
+
+.route {
+    background: #f8f7ff;
+    border-radius: 13px;
+    padding: 10px 14px;
+    margin-top: 13px;
+}
+
+.route-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 11px;
+    color: #172554;
+    min-height: 20px;
+}
+
+.route-line {
+    width: 1px;
+    height: 8px;
+    background: #c4b5fd;
+    margin-left: 3px;
+}
+
+.dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: #7c3aed;
+}
+
+.circle {
+    width: 7px;
+    height: 7px;
+    border: 2px solid #7c3aed;
+    border-radius: 50%;
+    background: white;
+}
+
+.no-ride {
+    text-align: center;
+    color: #64748b;
+    font-size: 13px;
+}
+
+
+/* SOS CARD */
+
+.sos-card {
+    width: 506px;
+    min-height: 279px;
+    background: white;
+    border: 1px solid #fecaca;
+    border-radius: 15px;
+    box-shadow: 0 2px 4px #e5e7eb;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 14px;
+}
+
+.sos-description {
+    width: 310px;
+    text-align: center;
+    color: #475569;
+    font-size: 11px;
+    line-height: 17px;
+    margin-bottom: 14px;
+}
+
+
+/* SOS BUTTON */
+
+.sos-button {
+    width: 128px;
+    height: 128px;
+    border-radius: 50%;
+    border: 6px solid #fee2e2;
+    background: #ff2638;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 0 8px 20px rgba(255, 38, 56, 0.30);
+}
+
+.sos-button:hover {
+    background: #dc1e30;
+}
+
+.sos-button:active {
+    transform: scale(0.97);
+}
+
+.warning {
+    font-size: 27px;
+    line-height: 30px;
+}
+
+.sos-text {
+    font-size: 17px;
+    font-weight: bold;
+    margin-top: 3px;
+}
+
+.hold {
+    color: #9ca3af;
+    font-size: 9px;
+    margin-top: 14px;
+}
+
+.active-message {
+    color: #dc2626;
+}
+
+
+/* DISABLED ONLY WHEN THERE IS NO RIDE */
+
+.sos-button.disabled {
+    background: #cbd5e1;
+    border-color: #e2e8f0;
+    cursor: not-allowed;
+    box-shadow: none;
+}
+
+
+/* EMERGENCY CONTACTS */
+
+.contacts-card {
+    width: 506px;
+    background: white;
+    border: 1px solid #ded9f3;
+    border-radius: 15px;
+    padding: 17px;
+    box-shadow: 0 2px 4px #e5e7eb;
+}
+
+.contacts-card h3 {
+    font-size: 11px;
+    color: #172554;
+    margin: 0 0 12px;
+}
+
+
+/* CONTACT */
+
+.contact {
+    height: 51px;
+    background: #f8f7ff;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 12px;
+    margin-bottom: 9px;
+}
+
+.contact:last-child {
+    margin-bottom: 0;
+}
+
+.contact-left {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.contact-icon {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+}
+
+.contact-icon.purple {
+    background: #ede9fe;
+    color: #7c3aed;
+}
+
+.contact-icon.red {
+    background: #fee2e2;
+    color: #ef4444;
+}
+
+.contact-icon.blue {
+    background: #dbeafe;
+    color: #3b82f6;
+}
+
+.contact-left b {
+    display: block;
+    font-size: 10px;
+    color: #172554;
+    font-weight: normal;
+}
+
+.contact-left span {
+    display: block;
+    font-size: 9px;
+    color: #94a3b8;
+    margin-top: 3px;
+}
+
+
+/* CALL */
+
+.call {
+    background: #ede9fe;
+    color: #7c3aed;
+    text-decoration: none;
+    height: 26px;
+    padding: 0 11px;
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 9px;
+}
+
+.call:hover {
+    background: #ddd6fe;
+}

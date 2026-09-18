@@ -1,0 +1,549 @@
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    background: #f8f7ff;
+    font-family: Arial, sans-serif;
+    color: #08194f;
+}
+
+.dashboard {
+    display: flex;
+    min-height: 100vh;
+}
+
+
+/* SIDEBAR */
+
+.sidebar {
+    width: 197px;
+    background: white;
+    border-right: 1px solid #ded9f3;
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+}
+
+.logo {
+    height: 63px;
+    border-bottom: 1px solid #ded9f3;
+    display: flex;
+    align-items: center;
+    padding: 12px 15px;
+    gap: 9px;
+}
+
+.logo-icon {
+    width: 30px;
+    height: 30px;
+    background: #8238ee;
+    color: white;
+    border-radius: 9px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.logo b {
+    display: block;
+    font-size: 13px;
+}
+
+.logo small {
+    display: block;
+    color: #8790a5;
+    font-size: 9px;
+    margin-top: 2px;
+}
+
+
+/* MENU */
+
+.menu {
+    padding: 10px 9px;
+}
+
+.menu a {
+    display: block;
+    color: #26365d;
+    text-decoration: none;
+    font-size: 12px;
+    padding: 10px 9px;
+    border-radius: 12px;
+    margin-bottom: 2px;
+}
+
+.menu a span {
+    margin-left: 8px;
+}
+
+.menu a:hover {
+    background: #f2edff;
+}
+
+.menu .active {
+    background: #8238ee;
+    color: white;
+}
+
+
+/* SIDEBAR BOTTOM */
+
+.sidebar-bottom {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    border-top: 1px solid #ded9f3;
+    padding: 15px 17px;
+}
+
+.profile {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.profile-pic {
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    background: #e7e4ef;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+}
+
+.profile b {
+    display: block;
+    font-size: 10px;
+}
+
+.profile small {
+    display: block;
+    color: #8a92a5;
+    font-size: 9px;
+    margin-top: 2px;
+}
+
+.logout {
+    display: block;
+    margin-top: 18px;
+    color: red;
+    text-decoration: none;
+    font-size: 11px;
+}
+
+
+/* MAIN */
+
+.main {
+    margin-left: 197px;
+    width: calc(100% - 197px);
+}
+
+
+/* HEADER */
+
+.header {
+    height: 75px;
+    background: white;
+    border-bottom: 1px solid #ded9f3;
+    padding: 18px 26px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.header h2 {
+    margin: 0;
+    font-size: 17px;
+}
+
+.header p {
+    margin: 5px 0 0;
+    color: #68738b;
+    font-size: 12px;
+}
+
+.header-right {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.notification {
+    width: 32px;
+    height: 32px;
+    background: #f5f1ff;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.user {
+    background: #f5f1ff;
+    border-radius: 18px;
+    padding: 6px 12px 6px 7px;
+    font-size: 11px;
+    display: flex;
+    align-items: center;
+    gap: 7px;
+}
+
+.small-pic {
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    background: #dfe7df;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+
+/* CONTENT */
+
+.content {
+    padding: 21px 27px;
+}
+
+
+/* SEARCH */
+
+.search-box {
+    background: white;
+    border: 1px solid #ded9f3;
+    border-radius: 14px;
+    padding: 20px;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 14px;
+    box-shadow: 0 2px 6px rgba(40, 32, 90, 0.08);
+}
+
+.field label {
+    display: block;
+    font-size: 11px;
+    margin-bottom: 7px;
+}
+
+.field input,
+.field select {
+    width: 100%;
+    height: 36px;
+    border: 1px solid #ddd5ff;
+    border-radius: 10px;
+    padding: 0 11px;
+    outline: none;
+    color: #17265b;
+    font-size: 11px;
+    background: white;
+}
+
+.field input:focus,
+.field select:focus {
+    border-color: #8238ee;
+}
+
+.field input::placeholder {
+    color: #9ba1b2;
+}
+
+
+/* CHECKBOX */
+
+.check-box {
+    height: 36px;
+    border: 1px solid #ddd5ff;
+    border-radius: 10px;
+    padding: 0 11px !important;
+    display: flex !important;
+    align-items: center;
+    gap: 7px;
+    color: #68738b;
+}
+
+.check-box input {
+    width: auto;
+    height: auto;
+}
+
+
+/* BUTTONS */
+
+.search-buttons {
+    grid-column: 1 / 4;
+    display: flex;
+    gap: 10px;
+}
+
+.search-btn {
+    background: #8238ee;
+    color: white;
+    border: none;
+    padding: 10px 18px;
+    border-radius: 10px;
+    font-size: 11px;
+    cursor: pointer;
+}
+
+.search-btn:hover {
+    background: #712bd8;
+}
+
+.clear-btn {
+    border: 1px solid #cfc4f4;
+    color: #7132d5;
+    background: white;
+    text-decoration: none;
+    padding: 9px 16px;
+    border-radius: 10px;
+    font-size: 11px;
+}
+
+
+/* RESULT */
+
+.result-header {
+    margin: 20px 0 14px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.result-header p {
+    margin: 0;
+    font-size: 12px;
+}
+
+.sort {
+    background: white;
+    border: 1px solid #ddd5ff;
+    padding: 9px 12px;
+    border-radius: 10px;
+    font-size: 10px;
+    color: #68738b;
+}
+
+
+/* RIDE LIST */
+
+.ride-list {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+}
+
+
+/* CARD */
+
+.ride-card {
+    background: white;
+    border: 1px solid #ded9f3;
+    border-radius: 14px;
+    padding: 16px;
+    box-shadow: 0 2px 6px rgba(40, 32, 90, 0.08);
+}
+
+
+/* DRIVER */
+
+.driver {
+    display: flex;
+    align-items: center;
+}
+
+.driver-pic {
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    background: #e5e2ed;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+}
+
+.driver-info {
+    margin-left: 9px;
+}
+
+.driver-info b {
+    font-size: 11px;
+}
+
+.stars {
+    color: #f4a900;
+    font-size: 11px;
+    margin-top: 3px;
+}
+
+.ride-tags {
+    margin-left: auto;
+    text-align: right;
+}
+
+.vehicle {
+    display: block;
+    background: #f0eaff;
+    color: #7132d5;
+    padding: 5px 8px;
+    border-radius: 7px;
+    font-size: 9px;
+}
+
+.women-tag {
+    display: block;
+    background: #fff0f5;
+    color: #c94d79;
+    padding: 5px 8px;
+    border-radius: 7px;
+    font-size: 9px;
+    margin-top: 4px;
+}
+
+
+/* ROUTE */
+
+.route {
+    position: relative;
+    background: #f7f5ff;
+    border-radius: 12px;
+    padding: 11px;
+    margin-top: 13px;
+}
+
+.route-line {
+    height: 27px;
+    display: flex;
+    align-items: center;
+    font-size: 10px;
+    color: #17265b;
+}
+
+.dot,
+.circle {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    border: 2px solid #8238ee;
+    margin-right: 9px;
+    position: relative;
+}
+
+.dot {
+    background: #8238ee;
+}
+
+.route-line:first-child .dot:after {
+    content: "";
+    position: absolute;
+    width: 1px;
+    height: 18px;
+    background: #a891e8;
+    left: 1px;
+    top: 6px;
+}
+
+.fare {
+    position: absolute;
+    right: 10px;
+    top: 13px;
+    text-align: right;
+}
+
+.fare b {
+    display: block;
+    color: #8238ee;
+    font-size: 17px;
+}
+
+.fare small {
+    color: #9298aa;
+    font-size: 8px;
+}
+
+
+/* DETAILS */
+
+.ride-details {
+    display: flex;
+    gap: 8px;
+    margin: 11px 0;
+    color: #68738b;
+    font-size: 8px;
+}
+
+.ride-details span {
+    background: #f7f7fb;
+    padding: 5px 6px;
+    border-radius: 6px;
+}
+
+
+/* RIDE TYPE */
+
+.ride-type {
+    display: inline-block;
+    background: #f0eaff;
+    color: #7132d5;
+    padding: 5px 8px;
+    border-radius: 7px;
+    font-size: 9px;
+    margin-bottom: 10px;
+}
+
+
+/* CARD BUTTONS */
+
+.card-buttons {
+    display: flex;
+    gap: 7px;
+}
+
+.card-buttons a {
+    flex: 1;
+    text-align: center;
+    text-decoration: none;
+    padding: 8px 4px;
+    border-radius: 9px;
+    font-size: 10px;
+}
+
+.view-btn {
+    background: #eee9ff;
+    color: #7132d5;
+}
+
+.request-btn {
+    background: #8238ee;
+    color: white;
+}
+
+
+/* NO RIDES */
+
+.no-rides {
+    grid-column: 1 / 4;
+    background: white;
+    border: 1px solid #ded9f3;
+    border-radius: 14px;
+    padding: 50px;
+    text-align: center;
+}
+
+.no-rides h3 {
+    margin: 0;
+    font-size: 16px;
+}
+
+.no-rides p {
+    color: #68738b;
+    font-size: 12px;
+}
