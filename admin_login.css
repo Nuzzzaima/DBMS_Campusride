@@ -1,0 +1,293 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    min-height: 100vh;
+    background: #f8f7ff;
+    font-family: Arial, sans-serif;
+    color: #08194f;
+}
+
+.top-bar {
+    height: 63px;
+    background: white;
+    border-top: 3px solid #ded9f3;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 26px;
+}
+
+.brand {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+}
+
+.brand-icon {
+    width: 27px;
+    height: 27px;
+    background: #8238ee;
+    color: white;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+}
+
+.brand b {
+    display: block;
+    font-size: 13px;
+}
+
+.brand small {
+    display: block;
+    color: #8790a5;
+    font-size: 9px;
+    margin-top: 2px;
+}
+
+.access {
+    background: white;
+    border: 1px solid #ded9f3;
+    color: #68738b;
+    border-radius: 14px;
+    padding: 5px 9px;
+    font-size: 9px;
+}
+
+.login-area {
+    width: 294px;
+    margin: 34px auto 80px;
+}
+
+.error-box {
+    min-height: 64px;
+    background: #fff1f3;
+    border: 1px solid #ffcbd3;
+    border-radius: 10px;
+    padding: 11px 12px;
+    display: flex;
+    align-items: flex-start;
+    gap: 9px;
+    position: relative;
+    color: #b61e39;
+    margin-bottom: 14px;
+}
+
+.error-icon {
+    width: 12px;
+    height: 12px;
+    border: 1px solid #ef4260;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 8px;
+    margin-top: 1px;
+}
+
+.error-box b {
+    font-size: 10px;
+    font-weight: normal;
+}
+
+.error-box p {
+    margin: 4px 15px 0 0;
+    font-size: 9px;
+    line-height: 1.4;
+}
+
+.close {
+    position: absolute;
+    right: 12px;
+    top: 10px;
+    font-size: 15px;
+    color: #ef4260;
+}
+
+.login-card {
+    background: white;
+    border: 1px solid #ded9f3;
+    border-radius: 12px;
+    padding: 24px 25px;
+    box-shadow: 0 2px 8px rgba(40, 32, 90, 0.08);
+}
+
+.login-icon {
+    width: 32px;
+    height: 32px;
+    margin: 0 auto 10px;
+    background: #f0eaff;
+    color: #8238ee;
+    border-radius: 9px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+}
+
+.login-card h1 {
+    text-align: center;
+    margin: 0;
+    font-size: 17px;
+}
+
+.subtitle {
+    text-align: center;
+    color: #8790a5;
+    font-size: 10px;
+    margin: 5px 0 20px;
+}
+
+.field {
+    margin-bottom: 12px;
+}
+
+.field label,
+.label-row label {
+    display: block;
+    font-size: 9px;
+    margin-bottom: 6px;
+}
+
+.label-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.label-row span {
+    color: #8238ee;
+    font-size: 9px;
+}
+
+.field input[type="text"],
+.field input[type="password"] {
+    width: 100%;
+    height: 31px;
+    border: 1px solid #ddd5ff;
+    border-radius: 8px;
+    padding: 0 10px;
+    outline: none;
+    color: #17265b;
+    font-size: 9px;
+    background: white;
+}
+
+.field input:focus {
+    border-color: #8238ee;
+}
+
+.field input::placeholder {
+    color: #9ba1b2;
+}
+
+.remember {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    color: #68738b;
+    font-size: 9px;
+    margin: 4px 0 12px;
+}
+
+.remember input {
+    width: 12px;
+    height: 12px;
+    accent-color: #8238ee;
+}
+
+.login-button {
+    width: 100%;
+    height: 29px;
+    background: #8238ee;
+    color: white;
+    border: none;
+    border-radius: 7px;
+    font-size: 10px;
+    cursor: pointer;
+}
+
+.login-button:hover {
+    background: #712bd8;
+}
+
+.session-link {
+    border-top: 1px solid #eeeaf8;
+    margin-top: 14px;
+    padding-top: 13px;
+    text-align: center;
+    color: #8790a5;
+    font-size: 8px;
+}
+
+.student-box {
+    height: 44px;
+    background: white;
+    border: 1px solid #ded9f3;
+    border-radius: 9px;
+    margin-top: 14px;
+    padding: 7px 10px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    text-decoration: none;
+    color: #08194f;
+}
+
+.student-icon {
+    width: 27px;
+    height: 27px;
+    border-radius: 8px;
+    background: #f0eaff;
+    color: #8238ee;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+}
+
+.student-box b {
+    display: block;
+    font-size: 9px;
+}
+
+.student-box small {
+    display: block;
+    color: #8790a5;
+    font-size: 8px;
+    margin-top: 2px;
+}
+
+.student-box > span {
+    margin-left: auto;
+    color: #8d94a7;
+    font-size: 14px;
+}
+
+.back-link {
+    display: block;
+    text-align: center;
+    margin-top: 12px;
+    color: #68738b;
+    text-decoration: none;
+    font-size: 9px;
+}
+
+.footer {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    height: 31px;
+    border-top: 1px solid #ded9f3;
+    background: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #8790a5;
+    font-size: 8px;
+}
