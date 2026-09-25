@@ -232,7 +232,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST'
    3. RESOLVE PROFILE PICTURE
    ===================================================== */
 
-$avatarUrl = "profile1.jpg";
+$avatarUrl = "uploads/avatars/profile.png";
 
 if (!empty($user['profile_picture'])) {
 

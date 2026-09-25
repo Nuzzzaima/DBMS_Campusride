@@ -3,6 +3,8 @@
 session_start();
 include "db.php";
 
+date_default_timezone_set('Asia/Dhaka');
+
 if (!isset($_SESSION['user_id'])) {
     header("Location: login.php");
     exit();
@@ -90,16 +92,16 @@ body {
             <li><a href="dashboard.php">Dashboard</a></li>
             <li><a href="find_ride.php">Find a Ride</a></li>
             <li><a href="create_ride.php">Create a Ride</a></li>
-            <li><a href="my_rides.php"  class="active">My Rides</a></li>
+            <li><a href="my_rides.php" class="active">My Rides</a></li>
             <li><a href="ride_summary.php">Ride Summary</a></li>
             <li><a href="ride_requests.php">Ride Requests</a></li>
             <li><a href="bookings.php">Bookings</a></li>
             <li><a href="vehicles.php">Vehicles</a></li>
             <li><a href="profile.php">Profile</a></li>
             <li><a href="ratings.php">Ratings & Reviews</a></li>
-            <li><a href="#">My Savings</a></li>
-            <li><a href="#">Notifications</a></li>
+            <li><a href="my_savings.php">My Savings</a></li>
             <li><a href="sos.php">SOS / Emergency</a></li>
+            <li><a href="logout.php">Logout</a></li>
         </ul>
     </div>
 
@@ -128,7 +130,7 @@ body {
         while ($row = mysqli_fetch_assoc($result)) {
             $ride_datetime = $row['ride_date'] . ' ' . $row['departure_time'];
             $current_datetime = date('Y-m-d H:i:s');
-            if ($row['ride_status'] == 'Active' && $ride_datetime >= $current_datetime) {
+            if ($row['ride_status'] == 'Active') {
                 $current_found = true;
 
     ?>
@@ -206,6 +208,19 @@ body {
                 <a href="ride_details.php?ride_id=<?php echo $row['ride_id']; ?>" class="details-btn">
     View Details
 </a>
+<?php
+if ($ride_datetime < $current_datetime) {
+?>
+
+    <button type="button"
+            class="complete-btn"
+            onclick="confirmComplete(<?php echo $row['ride_id']; ?>)">
+        Mark as Completed
+    </button>
+
+<?php
+}
+?>
             </div>
 
         </div>
@@ -244,7 +259,7 @@ body {
         while ($row = mysqli_fetch_assoc($result)) {
             $ride_datetime =$row['ride_date'] . ' ' . $row['departure_time'];
             $current_datetime =date('Y-m-d H:i:s');
-            if ($ride_datetime < $current_datetime || $row['ride_status'] != 'Active') {
+           if ($row['ride_status'] == 'Completed' || $row['ride_status'] == 'Cancelled') {
                 $previous_found = true;
 
     ?>
@@ -307,12 +322,6 @@ body {
 
             </div>
 
-            <div class="actions">
-                 <a href="ride_details.php?ride_id=<?php echo $row['ride_id']; ?>" class="details-btn">
-    View Details
-</a>
-            </div>
-
         </div>
     </div>
 
@@ -334,5 +343,14 @@ body {
     ?>
 </div>
 </div>
+<script>
+function confirmComplete(rideId)
+{
+    if (confirm("Are you sure you want to mark this ride as completed?"))
+    {
+        window.location.href = "complete_ride.php?ride_id=" + rideId;
+    }
+}
+</script>
 </body>
 </html>

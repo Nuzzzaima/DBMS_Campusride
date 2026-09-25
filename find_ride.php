@@ -71,20 +71,19 @@ if (isset($_GET['search'])) {
 // GET ACTIVE RIDES
 // =========================
 
-$sql = "SELECT
-            ride.*,
-            `USER`.full_name,
-            `USER`.profile_picture,
-            vehicle.vehicle_type,
-            vehicle.registration_number,
-            vehicle.seat_capacity
-        FROM ride
-        JOIN `USER`
-            ON ride.user_id = `USER`.user_id
-        LEFT JOIN vehicle
-            ON ride.vehicle_id = vehicle.vehicle_id
-        WHERE ride.ride_status = 'Active'
-        AND ride.available_seats > 0";
+$sql = "SELECT r.ride_id, r.ride_date, r.departure_time, r.start_location,
+ r.destination, r.ride_type, r.available_seats, r.fare, r.description, r.ride_status, r.women_only, u.full_name
+FROM ride r
+JOIN `USER` u
+    ON r.user_id = u.user_id
+WHERE r.ride_status = 'Active'
+AND (
+    r.ride_date > CURRENT_DATE
+    OR (
+        r.ride_date = CURRENT_DATE
+        AND r.departure_time >= CURRENT_TIME
+    )
+)";
 
 
 // =========================
@@ -95,7 +94,7 @@ if ($from != "") {
 
     $from_safe = mysqli_real_escape_string($conn, $from);
 
-    $sql .= " AND ride.start_location LIKE '%$from_safe%'";
+    $sql .= " AND r.start_location LIKE '%$from_safe%'";
 }
 
 
@@ -107,7 +106,7 @@ if ($to != "") {
 
     $to_safe = mysqli_real_escape_string($conn, $to);
 
-    $sql .= " AND ride.destination LIKE '%$to_safe%'";
+    $sql .= " AND r.destination LIKE '%$to_safe%'";
 }
 
 
@@ -119,7 +118,7 @@ if ($date != "") {
 
     $date_safe = mysqli_real_escape_string($conn, $date);
 
-    $sql .= " AND ride.ride_date = '$date_safe'";
+    $sql .= " AND r.ride_date = '$date_safe'";
 }
 
 
@@ -131,7 +130,7 @@ if ($time != "") {
 
     $time_safe = mysqli_real_escape_string($conn, $time);
 
-    $sql .= " AND ride.departure_time >= '$time_safe'";
+    $sql .= " AND r.departure_time >= '$time_safe'";
 }
 
 
@@ -143,7 +142,7 @@ if ($ride_type != "" && $ride_type != "All Types") {
 
     $type_safe = mysqli_real_escape_string($conn, $ride_type);
 
-    $sql .= " AND ride.ride_type = '$type_safe'";
+    $sql .= " AND r.ride_type = '$type_safe'";
 }
 
 
@@ -153,7 +152,7 @@ if ($ride_type != "" && $ride_type != "All Types") {
 
 if ($women_only == "Yes") {
 
-    $sql .= " AND ride.women_only = 'Yes'";
+    $sql .= " AND r.women_only = 'Yes'";
 }
 
 
@@ -161,7 +160,7 @@ if ($women_only == "Yes") {
 // SORT RIDES
 // =========================
 
-$sql .= " ORDER BY ride.ride_date ASC, ride.departure_time ASC";
+$sql .= " ORDER BY r.ride_date ASC, r.departure_time ASC";
 
 
 // =========================
@@ -197,6 +196,10 @@ $rideCount = mysqli_num_rows($result);
 </head>
 
 <body>
+
+<div id="successPopup" class="success-popup">
+    Ride request sent successfully!
+</div>
 
 
 <div class="dashboard">
@@ -459,10 +462,6 @@ $rideCount = mysqli_num_rows($result);
                                     </b>
 
 
-                                    <div class="stars">
-                                        ★★★★★
-                                    </div>
-
                                 </div>
 
 
@@ -652,5 +651,20 @@ $rideCount = mysqli_num_rows($result);
 
 
 </body>
+
+<script>
+    const params = new URLSearchParams(window.location.search);
+    const message = params.get("msg");
+
+    if (message === "request_sent") {
+        const popup = document.getElementById("successPopup");
+
+        popup.style.display = "block";
+
+        setTimeout(function() {
+            popup.style.display = "none";
+        }, 3000);
+    }
+</script>
 
 </html>

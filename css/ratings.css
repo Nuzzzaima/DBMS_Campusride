@@ -1,0 +1,407 @@
+/* =========================================
+   RESET
+   ========================================= */
+
+* {
+    box-sizing: border-box;
+}
+
+
+/* =========================================
+   BODY
+   ========================================= */
+
+html,
+body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    min-height: 100%;
+}
+
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f5f5f5;
+    color: #333;
+}
+
+
+/* =========================================
+   RATINGS SIDEBAR
+   ========================================= */
+
+.ratings-sidebar {
+
+    position: fixed;
+
+    left: 0;
+    top: 0;
+
+    width: 197px;
+    height: 100vh;
+
+    background-color: white;
+
+    border-right: 1px solid #ded9f3;
+
+    overflow-y: auto;
+
+    z-index: 10000;
+}
+
+
+/* =========================================
+   LOGO
+   ========================================= */
+
+.ratings-logo {
+
+    padding: 20px 15px;
+}
+
+
+.ratings-logo b {
+
+    display: block;
+
+    font-family: Arial, sans-serif;
+
+    font-size: 16px;
+
+    color: #08194f;
+}
+
+
+.ratings-logo small {
+
+    display: block;
+
+    margin-top: 4px;
+
+    font-size: 10px;
+
+    color: #8790a5;
+}
+
+
+/* =========================================
+   MENU
+   ========================================= */
+
+.ratings-menu {
+
+    padding: 12px 10px;
+}
+
+
+.ratings-menu a {
+
+    display: block;
+
+    width: 100%;
+
+    padding: 11px 12px;
+
+    margin-bottom: 4px;
+
+    text-decoration: none;
+
+    font-family: Arial, sans-serif;
+
+    font-size: 13px;
+
+    color: #5f6375;
+
+    border-radius: 7px;
+}
+
+
+.ratings-menu a:hover {
+
+    background-color: #f1eaff;
+
+    color: #8238ee;
+}
+
+
+/* CURRENT PAGE */
+
+.ratings-menu a.ratings-active {
+
+    background-color: #8238ee;
+
+    color: white;
+}
+
+
+/* =========================================
+   MAIN CONTENT
+   ========================================= */
+
+.ratings-main {
+
+    margin-left: 197px;
+
+    width: calc(100% - 197px);
+
+    min-height: 100vh;
+
+    padding: 40px;
+}
+
+
+/* =========================================
+   HEADINGS
+   ========================================= */
+
+.ratings-main h2 {
+
+    margin: 0 0 25px 0;
+
+    font-size: 28px;
+
+    color: #333;
+}
+
+
+/* =========================================
+   NO RIDES
+   ========================================= */
+
+.no-rides {
+
+    width: 100%;
+
+    max-width: 650px;
+
+    padding: 20px;
+
+    margin-top: 20px;
+
+    background-color: white;
+
+    border-radius: 10px;
+
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+
+    font-size: 16px;
+
+    color: #555;
+}
+
+
+/* =========================================
+   RIDE CARD
+   ========================================= */
+
+.ride-card {
+
+    width: 100%;
+
+    max-width: 650px;
+
+    padding: 22px;
+
+    margin-bottom: 20px;
+
+    background-color: white;
+
+    border-radius: 10px;
+
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+
+.ride-card h3 {
+
+    margin: 0 0 15px 0;
+
+    font-size: 20px;
+
+    color: #333;
+}
+
+
+.ride-card p {
+
+    margin: 8px 0;
+
+    color: #555;
+
+    font-size: 15px;
+}
+
+
+/* =========================================
+   RATE BUTTON
+   ========================================= */
+
+.ride-card button,
+.rating-form button {
+
+    background-color: #FA8145;
+
+    color: white;
+
+    border: none;
+
+    padding: 10px 18px;
+
+    border-radius: 6px;
+
+    cursor: pointer;
+
+    font-size: 14px;
+
+    margin-top: 10px;
+}
+
+
+.ride-card button:hover,
+.rating-form button:hover {
+
+    background-color: #e96f35;
+}
+
+
+/* =========================================
+   ALREADY RATED
+   ========================================= */
+
+.already-rated {
+
+    color: #4a8f4a !important;
+
+    font-weight: bold;
+}
+
+
+/* =========================================
+   RATING FORM
+   ========================================= */
+
+.rating-form {
+
+    width: 100%;
+
+    max-width: 650px;
+
+    padding: 25px;
+
+    margin-bottom: 35px;
+
+    background-color: white;
+
+    border-radius: 10px;
+
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+
+.rating-form p {
+
+    margin-top: 0;
+
+    margin-bottom: 25px;
+
+    font-size: 16px;
+}
+
+
+.rating-form label {
+
+    display: block;
+
+    margin-bottom: 8px;
+
+    font-weight: bold;
+}
+
+
+/* =========================================
+   SELECT
+   ========================================= */
+
+select {
+
+    width: 200px;
+
+    padding: 9px;
+
+    border: 1px solid #ccc;
+
+    border-radius: 6px;
+
+    background-color: white;
+
+    font-size: 14px;
+}
+
+
+select:focus {
+
+    outline: none;
+
+    border-color: #FA8145;
+}
+
+
+/* =========================================
+   TEXTAREA
+   ========================================= */
+
+textarea {
+
+    width: 100%;
+
+    min-height: 120px;
+
+    padding: 10px;
+
+    border: 1px solid #ccc;
+
+    border-radius: 6px;
+
+    resize: vertical;
+
+    font-family: Arial, sans-serif;
+
+    font-size: 14px;
+}
+
+
+textarea:focus {
+
+    outline: none;
+
+    border-color: #FA8145;
+}
+
+
+/* =========================================
+   MOBILE
+   ========================================= */
+
+@media (max-width: 768px) {
+
+    .ratings-sidebar {
+
+        position: relative;
+
+        width: 100%;
+
+        height: auto;
+    }
+
+
+    .ratings-main {
+
+        margin-left: 0;
+
+        width: 100%;
+
+        padding: 20px;
+    }
+
+}

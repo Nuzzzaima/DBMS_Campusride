@@ -13,8 +13,9 @@ $sql1 = "SELECT u.full_name,COUNT(r.ride_id) AS total_rides,COALESCE(SUM(r.fare)
 COALESCE(AVG(r.fare), 0) AS average_fare FROM user u LEFT JOIN ride r ON u.user_id = r.user_id
 AND r.ride_date < CURRENT_DATE WHERE u.user_id = $user_id GROUP BY u.user_id, u.full_name";
 
-$sql2 = "SELECT ride_type, COUNT(*) AS ride_count FROM ride WHERE user_id = $user_id AND ride_date < CURRENT_DATE
-GROUP BY ride_type ORDER BY ride_count DESC LIMIT 1";
+$sql2 = "SELECT ride_type, COUNT(*) AS ride_count FROM ride
+WHERE user_id = $user_id AND ride_date < CURRENT_DATE GROUP BY ride_type HAVING COUNT(*) > 0
+ORDER BY ride_count DESC LIMIT 1";
 
 $result1 = mysqli_query($conn, $sql1);
 $result2 = mysqli_query($conn, $sql2);
@@ -109,9 +110,10 @@ body {
             <li><a href="vehicles.php">Vehicles</a></li>
             <li><a href="profile.php">Profile</a></li>
             <li><a href="ratings.php">Ratings & Reviews</a></li>
-            <li><a href="#">My Savings</a></li>
+            <li><a href="my_savings.php">My Savings</a></li>
             <li><a href="#">Notifications</a></li>
             <li><a href="sos.php">SOS / Emergency</a></li>
+              <li><a href="logout.php">Logout</a></li>
         </ul>
     </div>
 

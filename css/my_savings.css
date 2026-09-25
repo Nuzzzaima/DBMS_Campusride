@@ -1,0 +1,241 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    display: grid;
+    grid-template-columns: 197px 1fr;
+    grid-template-areas: "sdbr main";
+    margin: 0;
+    background: #f8f8fc;
+    font-family: Arial, sans-serif;
+    color: #08194f;
+}
+
+
+/* SIDEBAR */
+
+.sidebar {
+    grid-area: sdbr;
+    min-height: 100vh;
+    background-color: white;
+    border-right: 1px solid #ded9f3;
+}
+
+.sidebar .logo {
+    padding: 20px 15px;
+}
+
+.sidebar .logo b {
+    display: block;
+    font-size: 16px;
+    color: #08194f;
+}
+
+.sidebar .logo small {
+    display: block;
+    margin-top: 4px;
+    font-size: 10px;
+    color: #8790a5;
+}
+
+.sidebar ul {
+    list-style: none;
+    margin: 0;
+    padding: 12px 10px;
+}
+
+.sidebar ul li {
+    display: block;
+    margin-bottom: 4px;
+}
+
+.sidebar ul li a {
+    display: block;
+    width: 100%;
+    padding: 11px 12px;
+    text-decoration: none;
+    color: #5f6375;
+    font-size: 13px;
+    border-radius: 7px;
+}
+
+.sidebar ul li a:hover {
+    background-color: #f1eaff;
+    color: #8238ee;
+}
+
+.sidebar ul li a.active {
+    background-color: #8238ee;
+    color: white;
+}
+
+
+/* MAIN */
+
+.main-content {
+    grid-area: main;
+    min-height: 100vh;
+}
+
+
+/* HEADER */
+
+.header {
+    background: white;
+    padding: 13px 25px;
+    border-bottom: 1px solid #e2def4;
+}
+
+.header h2 {
+    margin: 0;
+    font-size: 17px;
+}
+
+.header p {
+    margin: 5px 0 0;
+    color: #68738b;
+    font-size: 12px;
+}
+
+
+/* CONTAINER */
+
+.container {
+    width: 900px;
+    margin: 25px auto;
+}
+
+
+/* SUMMARY CARDS */
+
+.summary-cards {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 15px;
+}
+
+.saving-card {
+    background: white;
+    border: 1px solid #ded9f3;
+    border-radius: 14px;
+    padding: 20px;
+    box-shadow: 0 2px 6px rgba(40, 32, 90, 0.08);
+}
+
+.card-title {
+    color: #68738b;
+    font-size: 11px;
+    font-weight: 600;
+}
+
+.card-value {
+    margin-top: 12px;
+    color: #08194f;
+    font-size: 25px;
+    font-weight: 700;
+}
+
+.card-subtitle {
+    margin-top: 7px;
+    color: #8a92a5;
+    font-size: 10px;
+}
+
+
+/* SECTIONS */
+
+.section {
+    margin-top: 25px;
+}
+
+.section-title {
+    margin-bottom: 12px;
+}
+
+.section-title h3 {
+    margin: 0;
+    font-size: 17px;
+}
+
+.section-title p {
+    margin: 5px 0 0;
+    color: #68738b;
+    font-size: 12px;
+}
+
+
+/* ENVIRONMENTAL CARDS */
+
+.impact-cards {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
+}
+
+.impact-card {
+    background: white;
+    border: 1px solid #ded9f3;
+    border-radius: 14px;
+    padding: 20px;
+    box-shadow: 0 2px 6px rgba(40, 32, 90, 0.08);
+}
+
+.impact-label {
+    color: #68738b;
+    font-size: 11px;
+    font-weight: 600;
+}
+
+.impact-value {
+    margin-top: 12px;
+    color: #23834b;
+    font-size: 24px;
+    font-weight: 700;
+}
+
+.impact-card p {
+    margin: 7px 0 0;
+    color: #8a92a5;
+    font-size: 10px;
+}
+
+
+/* SAVINGS BREAKDOWN */
+
+.breakdown {
+    background: white;
+    border: 1px solid #ded9f3;
+    border-radius: 14px;
+    padding: 5px 20px;
+    box-shadow: 0 2px 6px rgba(40, 32, 90, 0.08);
+}
+
+.breakdown-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 17px 0;
+    border-bottom: 1px solid #eeeaf8;
+    color: #68738b;
+    font-size: 12px;
+}
+
+.breakdown-row strong {
+    color: #08194f;
+    font-size: 14px;
+}
+
+.breakdown-row.total-row {
+    border-bottom: none;
+}
+
+.breakdown-row.total-row span {
+    color: #08194f;
+    font-weight: 700;
+}
+
+.breakdown-row.total-row strong {
+    color: #23834b;
+    font-size: 17px;
+}

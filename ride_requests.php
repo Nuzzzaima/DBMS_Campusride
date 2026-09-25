@@ -4,10 +4,6 @@ session_start();
 include "db.php";
 
 
-// ==============================
-// CHECK LOGIN
-// ==============================
-
 if (!isset($_SESSION['user_id'])) {
     header("Location: login.php");
     exit();
@@ -15,10 +11,6 @@ if (!isset($_SESSION['user_id'])) {
 
 $user_id = $_SESSION['user_id'];
 
-
-// ==============================
-// GET LOGGED-IN USER
-// ==============================
 
 $sql_user = "SELECT full_name, university_email
              FROM `USER`
@@ -43,173 +35,123 @@ $fullName = $user['full_name'];
 $firstName = explode(' ', $fullName)[0];
 
 
-// ==============================
-// ACCEPT OR REJECT REQUEST
-// ==============================
-
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     $request_id = intval($_POST["request_id"]);
     $action = $_POST["action"];
 
 
-    // ==========================
-    // ACCEPT REQUEST
-    // ==========================
-
     if ($action == "accept") {
 
+       mysqli_begin_transaction($conn);
+       $getRide = mysqli_query(
+    $conn,
+    "SELECT rr.request_id, rr.ride_id, rr.request_status, r.available_seats,
+     r.ride_status,r.ride_date,r.departure_time
+     FROM ride_request rr
+     JOIN ride r
+         ON rr.ride_id = r.ride_id
+     WHERE rr.request_id = $request_id
+     AND rr.request_status = 'Pending'
+     AND r.user_id = $user_id
+     AND r.ride_status = 'Active'
+     AND (
+         r.ride_date > CURRENT_DATE
+         OR (
+             r.ride_date = CURRENT_DATE
+             AND r.departure_time >= CURRENT_TIME
+         )
+     )
+     AND r.available_seats > 0"
+);
 
-        // Get ride connected with this request
+if (!$getRide) {
+    mysqli_rollback($conn);
+    die("Database Error: " . mysqli_error($conn));
+}
 
-        $getRide = mysqli_query(
-            $conn,
-            "SELECT ride_id
-             FROM ride_request
-             WHERE request_id = $request_id
-             AND request_status = 'Pending'"
-        );
+$ride = mysqli_fetch_assoc($getRide);
 
+if (!$ride) {
+    mysqli_rollback($conn);
+    die("This request cannot be accepted.");
+}
 
-        if (!$getRide) {
-            die("Database Error: " . mysqli_error($conn));
-        }
+$ride_id = $ride['ride_id'];
 
+$updateRequest = mysqli_query(
+    $conn,
+    "UPDATE ride_request
+     SET request_status = 'Accepted'
+     WHERE request_id = $request_id
+     AND request_status = 'Pending'"
+);
 
-        if ($row = mysqli_fetch_assoc($getRide)) {
+if (!$updateRequest || mysqli_affected_rows($conn) != 1) {
+    mysqli_rollback($conn);
+    die("Could not accept the ride request.");
+}
 
-            $ride_id = $row["ride_id"];
+$updateRide = mysqli_query(
+    $conn,
+    "UPDATE ride
+     SET available_seats = available_seats - 1
+     WHERE ride_id = $ride_id
+     AND available_seats > 0"
+);
 
+if (!$updateRide || mysqli_affected_rows($conn) != 1) {
+    mysqli_rollback($conn);
+    die("Could not update available seats.");
+}
 
-            // Make sure this ride belongs to the logged-in driver
+$insertBooking = mysqli_query(
+    $conn,
+    "INSERT INTO booking
+     (request_id, booking_date, booking_status)
+     VALUES
+     ($request_id, CURDATE(), 'Confirmed')"
+);
 
-            $ownerCheck = mysqli_query(
-                $conn,
-                "SELECT ride_id
-                 FROM ride
-                 WHERE ride_id = $ride_id
-                 AND user_id = $user_id"
-            );
+if (!$insertBooking) {
+    mysqli_rollback($conn);
+    die("Could not create booking.");
+}
 
-
-            if (!$ownerCheck) {
-                die("Database Error: " . mysqli_error($conn));
-            }
-
-
-            if (mysqli_num_rows($ownerCheck) > 0) {
-
-
-                // Check available seats
-
-                $seatCheck = mysqli_query(
-                    $conn,
-                    "SELECT available_seats
-                     FROM ride
-                     WHERE ride_id = $ride_id"
-                );
-
-
-                if (!$seatCheck) {
-                    die("Database Error: " . mysqli_error($conn));
-                }
-
-
-                $seatRow = mysqli_fetch_assoc($seatCheck);
-
-
-                if ($seatRow && $seatRow["available_seats"] > 0) {
-
-
-                    // Accept request
-
-                    $updateRequest = mysqli_query(
-                        $conn,
-                        "UPDATE ride_request
-                         SET request_status = 'Accepted'
-                         WHERE request_id = $request_id"
-                    );
-
-
-                    if (!$updateRequest) {
-                        die("Database Error: " . mysqli_error($conn));
-                    }
-
-
-                    // Reduce available seats
-
-                    $updateRide = mysqli_query(
-                        $conn,
-                        "UPDATE ride
-                         SET available_seats = available_seats - 1
-                         WHERE ride_id = $ride_id"
-                    );
-
-
-                    if (!$updateRide) {
-                        die("Database Error: " . mysqli_error($conn));
-                    }
-
-
-                    // Create booking
-
-                    $insertBooking = mysqli_query(
-                        $conn,
-                        "INSERT INTO booking
-                        (request_id, booking_date, booking_status)
-                        VALUES
-                        ($request_id, CURDATE(), 'Confirmed')"
-                    );
-
-
-                    if (!$insertBooking) {
-                        die("Database Error: " . mysqli_error($conn));
-                    }
-                }
-            }
-        }
-
-
-    // ==========================
-    // REJECT REQUEST
-    // ==========================
+mysqli_commit($conn);
 
     } elseif ($action == "reject") {
 
 
-        // Make sure the request belongs to one of the
-        // logged-in user's rides
-
         $ownerCheck = mysqli_query(
+        $conn,
+        "SELECT rr.request_id
+         FROM ride_request rr
+         JOIN ride r
+             ON rr.ride_id = r.ride_id
+         WHERE rr.request_id = $request_id
+         AND rr.request_status = 'Pending'
+         AND r.user_id = $user_id"
+    );
+
+    if (!$ownerCheck) {
+        die("Database Error: " . mysqli_error($conn));
+    }
+
+    if (mysqli_num_rows($ownerCheck) > 0) {
+
+        $updateRequest = mysqli_query(
             $conn,
-            "SELECT rr.request_id
-             FROM ride_request rr
-             JOIN ride r
-                 ON rr.ride_id = r.ride_id
-             WHERE rr.request_id = $request_id
-             AND r.user_id = $user_id"
+            "UPDATE ride_request
+             SET request_status = 'Rejected'
+             WHERE request_id = $request_id
+             AND request_status = 'Pending'"
         );
 
-
-        if (!$ownerCheck) {
+        if (!$updateRequest) {
             die("Database Error: " . mysqli_error($conn));
         }
-
-
-        if (mysqli_num_rows($ownerCheck) > 0) {
-
-            $updateRequest = mysqli_query(
-                $conn,
-                "UPDATE ride_request
-                 SET request_status = 'Rejected'
-                 WHERE request_id = $request_id"
-            );
-
-
-            if (!$updateRequest) {
-                die("Database Error: " . mysqli_error($conn));
-            }
-        }
+    }
     }
 
 
@@ -218,27 +160,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 }
 
 
-// ==============================
-// GET RIDE REQUESTS
-// ==============================
-
-$sql = "SELECT
-            rr.request_id,
-            rr.request_time,
-            rr.request_status,
-            u.full_name,
-            u.student_id,
-            u.profile_picture,
-            r.ride_id,
-            r.start_location,
-            r.destination
-        FROM ride_request rr
-        JOIN ride r
-            ON rr.ride_id = r.ride_id
-        JOIN `USER` u
-            ON rr.user_id = u.user_id
-        WHERE r.user_id = $user_id
-        ORDER BY rr.request_time DESC";
+$sql = "SELECT rr.request_id, rr.user_id, rr.ride_id, rr.request_time, rr.request_status,
+ u.full_name, u.student_id, r.start_location, r.destination FROM ride_request rr
+ JOIN ride r ON rr.ride_id = r.ride_id JOIN `USER` u ON rr.user_id = u.user_id
+ WHERE r.user_id = $user_id ORDER BY rr.request_time DESC";
 
 
 $result = mysqli_query($conn, $sql);

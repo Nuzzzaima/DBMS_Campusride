@@ -1,17 +1,40 @@
 <?php
+session_start();
 include "db.php";
-$ride_id = $_GET['ride_id'];
-$sql = "SELECT * FROM ride_details_view WHERE ride_id = ?";
+
+if (!isset($_SESSION['user_id'])) {
+    header("Location: login.php");
+    exit();
+}
+
+$user_id = $_SESSION['user_id'];
+
+$ride_id = $_GET['ride_id'] ?? 0;
+
+
+$sql = "SELECT *
+        FROM ride_details_view
+        WHERE ride_id = ?
+        AND ride_status = 'Active'";
 
 $stmt = mysqli_prepare($conn, $sql);
-mysqli_stmt_bind_param($stmt, "i", $ride_id);
+
+mysqli_stmt_bind_param(
+    $stmt,
+    "i",
+    $ride_id
+);
+
 mysqli_stmt_execute($stmt);
+
 $result = mysqli_stmt_get_result($stmt);
+
 $row = mysqli_fetch_assoc($result);
+
+
 if (!$row) {
     die("Ride not found.");
 }
-
 ?>
 
 <!DOCTYPE html>
@@ -69,7 +92,7 @@ if (!$row) {
 
 
                 <div class="arrow">
-                    ->
+                    -
                 </div>
 
 
@@ -269,7 +292,7 @@ if (!$row) {
 
 
         <a href="my_rides.php" class="back-button">
-            ->Back to My Rides
+            Back to My Rides
         </a>
 
 

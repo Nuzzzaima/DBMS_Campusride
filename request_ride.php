@@ -19,13 +19,13 @@ if ($ride_id <= 0) {
 }
 
 
-$ride_sql = "SELECT
-                ride_id,
-                user_id,
-                ride_status,
-                available_seats
-             FROM ride
-             WHERE ride_id = $ride_id";
+$ride_sql = "SELECT ride_id, user_id, ride_status, available_seats FROM ride
+ WHERE ride_id = $ride_id AND ride_status = 'Active' AND (
+ ride_date > CURRENT_DATE
+ OR (
+  ride_date = CURRENT_DATE
+  AND departure_time >= CURRENT_TIME
+))";
 
 $ride_result = mysqli_query($conn, $ride_sql);
 

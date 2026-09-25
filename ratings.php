@@ -1,12 +1,9 @@
 <?php
 
 session_start();
+
 include "db.php";
 
-
-// =========================
-// CHECK LOGIN
-// =========================
 
 if (!isset($_SESSION['user_id'])) {
     header("Location: login.php");
@@ -16,462 +13,412 @@ if (!isset($_SESSION['user_id'])) {
 $user_id = $_SESSION['user_id'];
 
 
-// =========================
-// GET LOGGED-IN USER
-// =========================
+if (isset($_SESSION['success_message'])) {
 
-$sql_user = "SELECT full_name, university_email
-             FROM `USER`
-             WHERE user_id = '$user_id'
-             LIMIT 1";
+    echo "<script>
+            alert('" . $_SESSION['success_message'] . "');
+          </script>";
 
-$result_user = mysqli_query($conn, $sql_user);
-
-if (!$result_user) {
-    die("Database Error: " . mysqli_error($conn));
-}
-
-if (mysqli_num_rows($result_user) != 1) {
-    session_destroy();
-    header("Location: login.php");
-    exit();
-}
-
-$user = mysqli_fetch_assoc($result_user);
-
-$fullName = $user['full_name'];
-$firstName = explode(' ', $fullName)[0];
-
-
-// =========================
-// RATING SUMMARY
-// =========================
-
-$summary_sql = "SELECT
-                    COUNT(*) AS total_reviews,
-                    AVG(stars) AS average_rating,
-                    SUM(stars = 5) AS five_star,
-                    SUM(stars = 4) AS four_star,
-                    SUM(stars = 3) AS three_star,
-                    SUM(stars = 2) AS two_star,
-                    SUM(stars = 1) AS one_star
-                FROM rating
-                WHERE reviewee_id = '$user_id'";
-
-$summary_result = mysqli_query($conn, $summary_sql);
-
-if (!$summary_result) {
-    die("Database Error: " . mysqli_error($conn));
-}
-
-$summary = mysqli_fetch_assoc($summary_result);
-
-$total_reviews = $summary["total_reviews"];
-$average_rating = $summary["average_rating"];
-
-if ($average_rating == null) {
-    $average_rating = 0;
+    unset($_SESSION['success_message']);
 }
 
 
-// =========================
-// GET REVIEWS
-// =========================
 
-$sql = "SELECT
-            rating.rating_id,
-            rating.stars,
-            rating.review,
-            rating.rating_date,
-            `USER`.full_name,
-            `USER`.profile_picture,
-            `USER`.student_id
-        FROM rating
-        JOIN `USER`
-            ON rating.reviewer_id = `USER`.user_id
-        WHERE rating.reviewee_id = '$user_id'
-        ORDER BY rating.rating_date DESC";
+$booking_id = intval($_GET['booking_id'] ?? 0);
 
-$result = mysqli_query($conn, $sql);
+$booking = null;
 
-if (!$result) {
-    die("Query Error: " . mysqli_error($conn));
+
+if ($booking_id > 0) {
+
+    $booking_sql = "SELECT 
+                        b.booking_id,
+                        b.booking_status,
+                        rr.user_id AS reviewer_id,
+                        rr.ride_id,
+                        r.user_id AS reviewee_id,
+                        u.full_name AS driver_name
+                    FROM booking b
+                    JOIN ride_request rr
+                        ON b.request_id = rr.request_id
+                    JOIN ride r
+                        ON rr.ride_id = r.ride_id
+                    JOIN `USER` u
+                        ON r.user_id = u.user_id
+                    WHERE b.booking_id = $booking_id
+                    AND rr.user_id = $user_id
+                    AND b.booking_status = 'Completed'";
+
+    $booking_result = mysqli_query($conn, $booking_sql);
+
+    if (!$booking_result) {
+        die("Booking Query Error: " . mysqli_error($conn));
+    }
+
+    $booking = mysqli_fetch_assoc($booking_result);
+
+    if (!$booking) {
+        die("Booking not found or you are not allowed to rate this ride.");
+    }
+
+
+    $reviewer_id = $booking['reviewer_id'];
+    $reviewee_id = $booking['reviewee_id'];
+    $ride_id = $booking['ride_id'];
+
+
+    $check_rating_sql = "SELECT rating_id
+                         FROM rating
+                         WHERE booking_id = $booking_id";
+
+    $check_rating_result = mysqli_query($conn, $check_rating_sql);
+
+    if (!$check_rating_result) {
+        die("Rating Check Error: " . mysqli_error($conn));
+    }
+
+    $existing_rating = mysqli_fetch_assoc($check_rating_result);
+
+    if ($existing_rating) {
+        die("You have already rated this ride.");
+    }
+
+
+
+    if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+
+        $rating_value = intval($_POST['rating']);
+
+        $review_text = mysqli_real_escape_string(
+            $conn,
+            $_POST['review_text']
+        );
+
+
+        if ($rating_value < 1 || $rating_value > 5) {
+            die("Rating must be between 1 and 5.");
+        }
+
+
+        $rating_sql = "INSERT INTO rating
+                       (booking_id, ride_id, reviewer_id, reviewee_id, rating, review_text)
+                       VALUES
+                       ($booking_id, $ride_id, $reviewer_id, $reviewee_id, $rating_value, '$review_text')";
+
+        $rating_result = mysqli_query($conn, $rating_sql);
+
+        if (!$rating_result) {
+            die("Rating Insert Error: " . mysqli_error($conn));
+        }
+
+
+        $_SESSION['success_message'] = "Rating saved successfully!";
+
+        header("Location: ratings.php");
+        exit();
+    }
+}
+
+
+$completed_sql = "SELECT
+                    b.booking_id,
+                    rr.ride_id,
+                    r.ride_date,
+                    r.departure_time,
+                    r.user_id AS driver_id,
+                    u.full_name AS driver_name
+                  FROM booking b
+                  JOIN ride_request rr
+                    ON b.request_id = rr.request_id
+                  JOIN ride r
+                    ON rr.ride_id = r.ride_id
+                  JOIN `USER` u
+                    ON r.user_id = u.user_id
+                  WHERE rr.user_id = $user_id
+                  AND b.booking_status = 'Completed'
+                  ORDER BY r.ride_date DESC,
+                           r.departure_time DESC";
+
+$completed_result = mysqli_query($conn, $completed_sql);
+
+if (!$completed_result) {
+    die("Completed Rides Query Error: " . mysqli_error($conn));
 }
 
 ?>
 
+
 <!DOCTYPE html>
-<html lang="en">
+
+<html>
 
 <head>
 
-    <meta charset="UTF-8">
+    <title>Ratings - CampusRide</title>
 
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>CampusRide - Ratings & Reviews</title>
-
-    <link rel="stylesheet" href="ratings.css">
+    <link rel="stylesheet" href="css/ratings.css">
 
 </head>
 
+
 <body>
 
+<div class="ratings-sidebar">
 
-<div class="dashboard">
+    <div class="ratings-logo">
 
+        <b>CampusRide</b>
 
-    <!-- SHARED SIDEBAR -->
+        <small>UIU Student Portal</small>
 
-    <?php include __DIR__ . '/includes/sidebar.php'; ?>
+    </div>
 
 
-    <!-- MAIN -->
+    <div class="ratings-menu">
 
-    <main class="main">
+        <a href="dashboard.php">
+            Dashboard
+        </a>
 
+        <a href="find_ride.php">
+            Find a Ride
+        </a>
 
-        <!-- HEADER -->
+        <a href="create_ride.php">
+            Create a Ride
+        </a>
 
-        <header class="header">
+        <a href="my_rides.php">
+            My Rides
+        </a>
 
-            <div>
+        <a href="ride_summary.php">
+            Ride Summary
+        </a>
 
-                <h2>Ratings & Reviews</h2>
+        <a href="ride_requests.php">
+            Ride Requests
+        </a>
 
-                <p>Your reputation on CampusRide</p>
+        <a href="bookings.php">
+            Bookings
+        </a>
 
-            </div>
+        <a href="vehicles.php">
+            Vehicles
+        </a>
 
+        <a href="profile.php">
+            Profile
+        </a>
 
-            <div class="header-right">
+        <a href="ratings.php" class="ratings-active">
+            Ratings
+        </a>
 
-                <div class="notification">
-                    ♧
-                </div>
+        <a href="#">
+            My Savings
+        </a>
 
+        <a href="sos.php">
+            SOS / Emergency
+        </a>
 
-                <div class="profile">
+        <a href="logout.php">
+            Logout
+        </a>
 
-                    <div class="small-picture">
+    </div>
 
-                        <?= htmlspecialchars(
-                            strtoupper(substr($firstName, 0, 1))
-                        ) ?>
+</div>
 
-                    </div>
 
-                    <span>
-                        <?= htmlspecialchars($firstName) ?>
-                    </span>
 
-                </div>
+<!-- =====================================================
+     MAIN CONTENT
+     ===================================================== -->
 
-            </div>
+<div class="ratings-main">
 
-        </header>
 
+    <?php if ($booking_id > 0 && $booking) { ?>
 
-        <!-- CONTENT -->
 
-        <section class="content">
+        <!-- RATE SELECTED RIDE -->
 
+        <h2>Rate Your Ride</h2>
 
-            <!-- RATING SUMMARY -->
 
-            <div class="rating-summary">
+        <div class="rating-form">
 
+            <p>
 
-                <div class="rating-number">
+                <strong>Driver:</strong>
 
-                    <h1>
-                        <?= number_format($average_rating, 1); ?>
-                    </h1>
+                <?php echo $booking['driver_name']; ?>
 
+            </p>
 
-                    <div class="big-stars">
-                        ★★★★★
-                    </div>
 
+            <form method="POST"
+                  action="ratings.php?booking_id=<?php echo $booking_id; ?>">
 
-                    <p>
-                        <?= $total_reviews; ?>
 
-                        <?= ($total_reviews == 1)
-                            ? "review"
-                            : "reviews"; ?>
-                    </p>
+                <label>Rating:</label>
 
-                </div>
 
+                <select name="rating" required>
 
-                <div class="rating-bars">
+                    <option value="">
+                        Select Rating
+                    </option>
 
+                    <option value="1">
+                        ⭐ 1
+                    </option>
 
-                    <!-- 5 STAR -->
+                    <option value="2">
+                        ⭐⭐ 2
+                    </option>
 
-                    <div class="bar-row">
+                    <option value="3">
+                        ⭐⭐⭐ 3
+                    </option>
 
-                        <span>5</span>
+                    <option value="4">
+                        ⭐⭐⭐⭐ 4
+                    </option>
 
-                        <b>★</b>
+                    <option value="5">
+                        ⭐⭐⭐⭐⭐ 5
+                    </option>
 
-                        <div class="bar">
+                </select>
 
-                            <div style="width:
-                                <?= $total_reviews > 0
-                                    ? ($summary["five_star"] / $total_reviews) * 100
-                                    : 0;
-                                ?>%;">
 
-                            </div>
+                <br><br>
 
-                        </div>
 
-                        <span>
-                            <?= $summary["five_star"]; ?>
-                        </span>
+                <label>Review:</label>
 
-                    </div>
 
+                <br>
 
-                    <!-- 4 STAR -->
 
-                    <div class="bar-row">
+                <textarea
+                    name="review_text"
+                    rows="5"
+                    placeholder="Write your review..."
+                    required></textarea>
 
-                        <span>4</span>
 
-                        <b>★</b>
+                <br><br>
 
-                        <div class="bar">
 
-                            <div style="width:
-                                <?= $total_reviews > 0
-                                    ? ($summary["four_star"] / $total_reviews) * 100
-                                    : 0;
-                                ?>%;">
-
-                            </div>
-
-                        </div>
-
-                        <span>
-                            <?= $summary["four_star"]; ?>
-                        </span>
-
-                    </div>
-
-
-                    <!-- 3 STAR -->
-
-                    <div class="bar-row">
-
-                        <span>3</span>
-
-                        <b>★</b>
-
-                        <div class="bar">
-
-                            <div style="width:
-                                <?= $total_reviews > 0
-                                    ? ($summary["three_star"] / $total_reviews) * 100
-                                    : 0;
-                                ?>%;">
-
-                            </div>
-
-                        </div>
-
-                        <span>
-                            <?= $summary["three_star"]; ?>
-                        </span>
-
-                    </div>
-
-
-                    <!-- 2 STAR -->
-
-                    <div class="bar-row">
-
-                        <span>2</span>
-
-                        <b>★</b>
-
-                        <div class="bar">
-
-                            <div style="width:
-                                <?= $total_reviews > 0
-                                    ? ($summary["two_star"] / $total_reviews) * 100
-                                    : 0;
-                                ?>%;">
-
-                            </div>
-
-                        </div>
-
-                        <span>
-                            <?= $summary["two_star"]; ?>
-                        </span>
-
-                    </div>
-
-
-                    <!-- 1 STAR -->
-
-                    <div class="bar-row">
-
-                        <span>1</span>
-
-                        <b>★</b>
-
-                        <div class="bar">
-
-                            <div style="width:
-                                <?= $total_reviews > 0
-                                    ? ($summary["one_star"] / $total_reviews) * 100
-                                    : 0;
-                                ?>%;">
-
-                            </div>
-
-                        </div>
-
-                        <span>
-                            <?= $summary["one_star"]; ?>
-                        </span>
-
-                    </div>
-
-                </div>
-
-            </div>
-
-
-            <!-- REVIEW TITLE -->
-
-            <div class="review-heading">
-
-                <h3>Reviews Received</h3>
-
-                <button type="button">
-                    ☆ &nbsp; Give a Rating
+                <button type="submit">
+                    Submit Rating
                 </button>
 
-            </div>
+
+            </form>
+
+        </div>
 
 
-            <!-- REVIEWS -->
-
-            <?php if (mysqli_num_rows($result) > 0) { ?>
+    <?php } ?>
 
 
-                <?php while ($row = mysqli_fetch_assoc($result)) { ?>
+
+    <!-- COMPLETED RIDES -->
+
+    <h2>Completed Rides</h2>
 
 
-                    <div class="review-card">
+    <?php
+
+    if (mysqli_num_rows($completed_result) == 0) {
+
+        echo "<div class='no-rides'>
+                You have no completed rides yet.
+              </div>";
+    }
 
 
-                        <div class="review-top">
+    while ($ride = mysqli_fetch_assoc($completed_result)) {
 
 
-                            <div class="review-user">
+        /* CHECK IF ALREADY RATED */
+
+        $rating_check_sql = "SELECT rating_id
+                             FROM rating
+                             WHERE booking_id = "
+                             . $ride['booking_id'];
+
+        $rating_check_result = mysqli_query(
+            $conn,
+            $rating_check_sql
+        );
+
+        if (!$rating_check_result) {
+            die("Rating Check Error: " . mysqli_error($conn));
+        }
+
+        $already_rated = mysqli_fetch_assoc(
+            $rating_check_result
+        );
+
+        ?>
 
 
-                                <?php if (!empty($row["profile_picture"])) { ?>
-
-                                    <img
-                                        src="<?= htmlspecialchars($row["profile_picture"]); ?>"
-                                        alt="Profile"
-                                    >
-
-                                <?php } else { ?>
-
-                                    <div class="review-picture">
-
-                                        <?= htmlspecialchars(
-                                            strtoupper(
-                                                substr($row["full_name"], 0, 1)
-                                            )
-                                        ); ?>
-
-                                    </div>
-
-                                <?php } ?>
+        <div class="ride-card">
 
 
-                                <div>
-
-                                    <h4>
-                                        <?= htmlspecialchars($row["full_name"]); ?>
-                                    </h4>
+            <h3>
+                <?php echo $ride['driver_name']; ?>
+            </h3>
 
 
-                                    <div class="stars">
-
-                                        <?php
-
-                                        for ($i = 1; $i <= 5; $i++) {
-
-                                            if ($i <= $row["stars"]) {
-                                                echo "★";
-                                            } else {
-                                                echo "☆";
-                                            }
-
-                                        }
-
-                                        ?>
-
-                                    </div>
-
-                                </div>
-
-                            </div>
+            <p>
+                Date:
+                <?php echo $ride['ride_date']; ?>
+            </p>
 
 
-                            <span class="review-date">
-
-                                <?= date(
-                                    "M d",
-                                    strtotime($row["rating_date"])
-                                ); ?>
-
-                            </span>
-
-                        </div>
+            <p>
+                Time:
+                <?php echo $ride['departure_time']; ?>
+            </p>
 
 
-                        <p class="review-text">
+            <?php if ($already_rated) { ?>
 
-                            <?= htmlspecialchars(
-                                $row["review"] ?: "No written review."
-                            ); ?>
-
-                        </p>
-
-
-                    </div>
-
-
-                <?php } ?>
+                <p class="already-rated">
+                    ✓ Already Rated
+                </p>
 
 
             <?php } else { ?>
 
+                <a href="ratings.php?booking_id=<?php
+                    echo $ride['booking_id'];
+                ?>">
 
-                <div class="empty">
+                    <button type="button">
+                        Rate This Ride
+                    </button>
 
-                    No reviews received yet.
-
-                </div>
-
+                </a>
 
             <?php } ?>
 
 
-        </section>
+        </div>
 
-    </main>
+
+        <?php
+    }
+    ?>
+
 
 </div>
 

@@ -547,3 +547,15 @@ body {
     color: #68738b;
     font-size: 12px;
 }
+.success-popup {
+    display: none;
+    position: fixed;
+    top: 30px;
+    right: 30px;
+    background: #2e7d32;
+    color: white;
+    padding: 15px 25px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    z-index: 9999;
+}

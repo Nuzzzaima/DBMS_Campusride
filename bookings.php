@@ -1,3 +1,4 @@
+
 <?php
 
 session_start();
@@ -11,14 +12,16 @@ if (!isset($_SESSION['user_id'])) {
 $user_id = $_SESSION['user_id'];
 
 
-/* ================= CANCEL BOOKING ================= */
-
 if (isset($_POST['cancel_booking'])) {
 
     $booking_id = intval($_POST['booking_id']);
 
-    // Check that this booking belongs to the logged-in user
-    $check_sql = "SELECT b.booking_id
+    mysqli_begin_transaction($conn);
+
+    $check_sql = "SELECT
+                    b.booking_id,
+                    b.booking_status,
+                    rr.ride_id
                   FROM booking b
                   JOIN ride_request rr
                       ON b.request_id = rr.request_id
@@ -29,27 +32,48 @@ if (isset($_POST['cancel_booking'])) {
     $check_result = mysqli_query($conn, $check_sql);
 
     if (!$check_result) {
+        mysqli_rollback($conn);
         die("Booking Check Error: " . mysqli_error($conn));
     }
 
-    if (mysqli_num_rows($check_result) > 0) {
+    $booking = mysqli_fetch_assoc($check_result);
 
-        $cancel_sql = "UPDATE booking
-                       SET booking_status = 'Cancelled'
-                       WHERE booking_id = $booking_id
-                       AND booking_status = 'Confirmed'";
-
-        if (!mysqli_query($conn, $cancel_sql)) {
-            die("Cancel Booking Error: " . mysqli_error($conn));
-        }
+    if (!$booking) {
+        mysqli_rollback($conn);
+        die("This booking cannot be cancelled.");
     }
+
+    $ride_id = $booking['ride_id'];
+
+    $cancel_sql = "UPDATE booking
+                   SET booking_status = 'Cancelled'
+                   WHERE booking_id = $booking_id
+                   AND booking_status = 'Confirmed'";
+
+    $cancel_result = mysqli_query($conn, $cancel_sql);
+
+    if (!$cancel_result || mysqli_affected_rows($conn) != 1) {
+        mysqli_rollback($conn);
+        die("Cancel Booking Error.");
+    }
+
+
+    $seat_sql = "UPDATE ride
+                 SET available_seats = available_seats + 1
+                 WHERE ride_id = $ride_id";
+
+    $seat_result = mysqli_query($conn, $seat_sql);
+
+    if (!$seat_result || mysqli_affected_rows($conn) != 1) {
+        mysqli_rollback($conn);
+        die("Could not return the ride seat.");
+    }
+
+    mysqli_commit($conn);
 
     header("Location: bookings.php");
     exit();
 }
-
-
-/* ================= GET CURRENT USER ================= */
 
 $user_sql = "SELECT full_name, university_email, profile_picture
              FROM `USER`
@@ -68,40 +92,20 @@ $user_email = $user['university_email'];
 $user_picture = $user['profile_picture'];
 
 
-/* ================= GET BOOKINGS ================= */
 
 $sql = "SELECT
-            b.booking_id,
-            b.request_id,
-            b.booking_date,
-            b.booking_status,
-
-            rr.user_id,
-            rr.ride_id,
-
-            r.start_location,
-            r.destination,
-            r.ride_date,
-            r.departure_time,
-            r.ride_type,
-            r.fare,
-
-            u.full_name,
-            u.profile_picture
-
+ b.booking_id,b.request_id,b.booking_date, b.booking_status, rr.user_id,
+ rr.ride_id,r.start_location,
+ r.destination,r.ride_date,r.departure_time,r.ride_type,
+r.fare,u.full_name,u.student_id,u.university_email,u.phone,u.profile_picture
         FROM booking b
-
         JOIN ride_request rr
             ON b.request_id = rr.request_id
-
         JOIN ride r
             ON rr.ride_id = r.ride_id
-
         JOIN `USER` u
             ON r.user_id = u.user_id
-
         WHERE rr.user_id = $user_id
-
         ORDER BY b.booking_date DESC";
 
 
@@ -137,18 +141,15 @@ if (!$result) {
 <div class="dashboard">
 
 
-    <!-- ================= SIDEBAR ================= -->
 
     <?php include __DIR__ . '/includes/sidebar.php'; ?>
 
 
-    <!-- ================= MAIN ================= -->
 
     <div class="main">
 
 
-        <!-- ================= HEADER ================= -->
-
+      
         <div class="header">
 
 
@@ -208,9 +209,6 @@ if (!$result) {
         </div>
 
 
-
-        <!-- ================= CONTENT ================= -->
-
         <div class="content">
 
 
@@ -256,12 +254,8 @@ if (!$result) {
                         ?>
 
 
-                        <!-- ================= BOOKING CARD ================= -->
-
                         <div class="booking-card">
 
-
-                            <!-- TOP ROW -->
 
                             <div class="booking-top">
 
@@ -408,20 +402,13 @@ if (!$result) {
 
                             </div>
 
-
-
-                            <!-- BOTTOM -->
-
                             <div class="booking-bottom">
 
-
-                                <!-- DRIVER -->
 
                                 <div class="driver">
 
 
                                     <?php if (!empty($row['profile_picture'])) { ?>
-
 
                                         <img
                                             src="uploads/<?php echo htmlspecialchars($row['profile_picture']); ?>"
@@ -429,15 +416,11 @@ if (!$result) {
                                             alt="Driver"
                                         >
 
-
                                     <?php } else { ?>
-
 
                                         <div class="driver-pic driver-initial">
 
-
                                             <?php
-
                                             echo strtoupper(
                                                 substr(
                                                     $row['full_name'],
@@ -445,30 +428,22 @@ if (!$result) {
                                                     1
                                                 )
                                             );
-
                                             ?>
 
-
                                         </div>
-
 
                                     <?php } ?>
 
 
                                     <div class="driver-name">
 
-
                                         <?php
-
                                         echo htmlspecialchars(
                                             $row['full_name']
                                         );
-
                                         ?>
 
-
                                     </div>
-
 
                                 </div>
 
@@ -538,15 +513,12 @@ if (!$result) {
 
                                     <?php if ($row['booking_status'] == 'Completed') { ?>
 
-
-                                        <a
-                                            href="ratings.php"
-                                            class="rate-btn"
-                                        >
-
-                                            ☆ Rate
-
-                                        </a>
+<a
+    href="ratings.php?booking_id=<?php echo $row['booking_id']; ?>"
+    class="rate-btn"
+>
+    ☆ Rate
+</a>
 
 
                                     <?php } ?>
@@ -570,7 +542,6 @@ if (!$result) {
             <?php } else { ?>
 
 
-                <!-- ================= NO BOOKINGS ================= -->
 
                 <div class="no-bookings">
 

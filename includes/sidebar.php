@@ -178,8 +178,12 @@ $currentPage = basename($_SERVER['PHP_SELF']);
                     Ratings
                 </a>
             </li>
-            <li><a href="#">My Savings</a></li>
-            <li><a href="#">Notifications</a></li>
+           <li>
+                <a href="my_savings.php"
+                   class="<?= $currentPage === 'my_savings.php' ? 'active' : '' ?>">
+                    Savings
+                </a>
+            </li>
             <li>
                 <a href="sos.php"
                    class="<?= $currentPage === 'sos.php' ? 'active' : '' ?>">

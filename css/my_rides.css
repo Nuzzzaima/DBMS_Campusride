@@ -63,11 +63,6 @@ body {
     color: #8238ee;
 }
 
-.sidebar ul li a.active {
-    background-color: #8238ee;
-    color: white;
-}
-
 .main-content {
     grid-area: main;
     min-height: 100vh;
@@ -294,4 +289,16 @@ body {
     display: flex;
     align-items: center;
     text-decoration: none;
+}
+.complete-btn {
+    border-color: #b9dfc7 !important;
+    color: #23834b !important;
+}
+
+.complete-btn:hover {
+    background: #f0faf3 !important;
+}
+.sidebar ul li a.active {
+    background-color: #8238ee;
+    color: white;
 }
