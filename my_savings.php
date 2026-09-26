@@ -107,7 +107,6 @@ $saved_cost = $solo_cost - $shared_cost;
             <li><a href="vehicles.php">Vehicles</a></li>
             <li><a href="profile.php">Profile</a></li>
             <li><a href="ratings.php">Ratings & Reviews</a></li>
-            <li><a href="logout.php">Logout</a></li>
 
             <li>
                 <a href="my_savings.php" class="active">
@@ -116,6 +115,7 @@ $saved_cost = $solo_cost - $shared_cost;
             </li>
 
             <li><a href="sos.php">SOS / Emergency</a></li>
+            <li><a href="logout.php">Logout</a></li>
 
         </ul>
 
